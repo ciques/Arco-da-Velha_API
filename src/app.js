@@ -18,7 +18,6 @@ app.use((error, req, res, next) => {
   res.json({error: error.message})
 })
 
-app.listen(port, () => {
-  console.log(`Arco da Velha is running on port ${port}.`);
-});
-
+app.listen(process.env.PORT || app.get('port'), () => {
+  console.log(`Arco da Velha API listening on port ${process.env.PORT}!`)
+})
