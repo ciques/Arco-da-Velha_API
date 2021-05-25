@@ -1,4 +1,4 @@
-knexfilerequire('dotenv').config()
+require('dotenv').config()
 const pg = require('pg')
 pg.defaults.ssl = true
 

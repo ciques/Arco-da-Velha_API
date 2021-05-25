@@ -17,8 +17,10 @@
   },
   "homepage": "https://github.com/ciques/Arco-da-Velha_API#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "knex": "^0.95.6",
     "pg": "^8.6.0"
   },

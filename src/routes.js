@@ -1,10 +1,13 @@
 const express = require('express')
 const routes = express.Router()
+const authMiddleware = require('./middlewares/auth')
 
-const UserController = require ('./controllers/UserController')
+const AuthController = require ('./controllers/AuthController')
 const ProductsController = require ('./controllers/ProductsController')
 
-routes.post('/login', UserController.login)
-routes.post('/listProducts', ProductsController.list)
+routes.post('/register', AuthController.register)
+routes.post('/login', AuthController.login)
+routes.post('/listProducts', ProductsController.listProduct)
+routes.post('/addProducts', authMiddleware, ProductsController.addProduct)
 
 module.exports = routes
