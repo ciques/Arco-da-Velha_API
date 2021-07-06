@@ -8,6 +8,7 @@ const ProductsController = require ('./controllers/ProductsController')
 routes.post('/register', AuthController.register)
 routes.post('/login', AuthController.login)
 routes.post('/listProducts', ProductsController.listProduct)
-routes.post('/addProducts', authMiddleware, ProductsController.addProduct)
+routes.post('/addProducts', authMiddleware.verify, ProductsController.addProduct)
+routes.post('/refresh', authMiddleware.verify, authMiddleware.refresh)
 
 module.exports = routes

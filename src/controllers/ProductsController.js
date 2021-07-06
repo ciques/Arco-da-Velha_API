@@ -30,11 +30,12 @@ module.exports = {
                 price: product.price
             }).returning('*')
 
+            return res.json(teste)
+
         } catch (error) {
             next(error)
         }
-
-
-        return res.json(teste)
+        
+        next();
     }
 }
