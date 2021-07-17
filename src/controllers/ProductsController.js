@@ -1,9 +1,11 @@
 const knex = require('../database')
 
-module.exports = {
+module.exports = {    
     async listProduct(req, res, next) {
-        const results = await knex('products')
+        const payload = req.body
 
+        const results = await knex('products').orderBy('name')
+            .paginate({ perPage: payload.pageSize, currentPage: payload.page });
         return res.json(results)
     },
 
