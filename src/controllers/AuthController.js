@@ -12,7 +12,8 @@ module.exports = {
             }
 
             const newUser  = req.body;
-            
+            console.log(req.body);
+
             // validação da senha e email WIP
             if(!newUser.password) {
                 return res.status(400).send({error: 'Senha não informada'})

@@ -4,7 +4,7 @@ module.exports = {
     async listProduct(req, res, next) {
         const payload = req.body
 
-        const results = await knex('products').orderBy('name')
+        const results = await knex('products').orderBy('title')
             .paginate({ perPage: payload.pageSize, currentPage: payload.page });
         return res.json(results)
     },
@@ -12,8 +12,8 @@ module.exports = {
     async addProduct(req, res, next) {
         const product = req.body
 
-        if(!product.name) {
-            return res.status(400).send({error: 'Nome não informado'})
+        if(!product.title) {
+            return res.status(400).send({error: 'Título não informado'})
         }
 
         if(!product.artist) {
@@ -25,14 +25,50 @@ module.exports = {
         }
 
         try {
-            teste = await knex('products').insert({   
-                name : product.name,
+            const results = await knex('products').insert({   
+                title : product.title,
                 artist: product.artist,
                 type: product.type,
                 price: product.price
             }).returning('*')
 
-            return res.json(teste)
+            return res.json(results)
+
+        } catch (error) {
+            next(error)
+        }
+        
+        next();
+    },
+
+    async removeProduct(req, res, next) {
+        const product = req.body
+
+        try {
+            const results = await knex('products').where('id', product.id).del();
+            return res.json({message: 'Success deleted disco' + product.id})
+
+        } catch (error) {
+            next(error)
+        }
+        
+        next();
+    },
+
+    async updateProduct(req, res, next) {
+        const product = req.body.product
+
+        try {
+            const results = await knex('products')
+                .where({ id: product.id })
+                .update({   
+                    title: product.title,
+                    artist: product.artist,
+                    type: product.type,
+                    price: product.price
+                }, ['*'])
+            console.log(results);
+            return res.json({message: 'disco atualizado ' + results})
 
         } catch (error) {
             next(error)
