@@ -57,28 +57,33 @@ module.exports = {
     },    
 
     async login(req, res, next) {
-        const { email, password } = req.body
+        try {
+            const { email, password } = req.body
 
-        if(!email || !password) {
-            return res.status(400).send({error: 'Email ou senha não informados'})
+            if(!email || !password) {
+                return res.status(400).send({error: 'Email ou senha não informados'})
+            }
+
+            const user = await knex('users').where('email', email).first()
+
+            if(!user) {
+                return res.status(400).send({error: 'Usuário não encontrado'})
+            }
+
+            if (!await bcrypt.compare(password, user.password)) {
+                return res.status(400).send({error: 'Senha inválida'})
+            }
+
+            token = jwt.sign({ data: user.id }, process.env.JWT_SECRET, {
+                expiresIn: 86400
+            });
+                        
+            user.password = undefined
+            return res.json({user, token})
+            
+        } catch(error) {
+            next(error)
         }
-
-        const user = await knex('users').where('email', email).first()
-
-        if(!user) {
-            return res.status(400).send({error: 'Usuário não encontrado'})
-        }
-
-        if (!await bcrypt.compare(password, user.password)) {
-            return res.status(400).send({error: 'Senha inválida'})
-        }
-
-        token = jwt.sign({ data: user.id }, process.env.JWT_SECRET, {
-            expiresIn: 86400
-        });
-                    
-        user.password = undefined
-        return res.json({user, token})
     }
     
 }
