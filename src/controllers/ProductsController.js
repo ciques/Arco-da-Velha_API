@@ -4,6 +4,15 @@ module.exports = {
     async listProduct(req, res, next) {
         try {
             const payload = req.body
+            console.log(payload)
+            if(payload.filter) {
+                const results = await knex('products').orderBy('title')
+                    .where('title', 'ilike', `%${payload.filter.toLowerCase()}%`)
+                    .orWhere('artist', 'ilike', `%${payload.filter.toLowerCase()}%`)
+                .paginate({ perPage: payload.pageSize, currentPage: payload.page });
+
+                return res.json(results)
+            }
 
             const results = await knex('products').orderBy('title')
                 .paginate({ perPage: payload.pageSize, currentPage: payload.page });
