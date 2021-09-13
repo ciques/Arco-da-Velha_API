@@ -44,6 +44,10 @@ const comparePassword = (password, hashPassword) => {
     })
 }
 
+const storeImage = (password, hashPassword) => {
+
+}
+
 
 
 module.exports = {
