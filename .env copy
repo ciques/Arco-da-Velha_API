@@ -1,5 +1,0 @@
-#DATABASE_URL="mysql://admin:younnergust@localhost:3306/arco_local"
-
-DATABASE_URL='postgres://postgres:postgres@localhost:5432/arco_local'
-JWT_SECRET ='AB56E093E8FBFECB43EF5BED89532AF1ACBD0F31C1DE11DA03FE1098D4506A1C'
-PORT=5000
