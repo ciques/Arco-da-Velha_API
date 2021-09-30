@@ -9,9 +9,11 @@ module.exports = {
 
             const results = knex('products')
                 .modify(function(queryBuilder) {
-                    if(payload.filter) {
-                        queryBuilder.where('title', 'ilike', `%${payload.filter.toLowerCase()}%`)
-                            .orWhere('artist', 'ilike', `%${payload.filter.toLowerCase()}%`)
+                    if(payload.filterPost) {
+                        queryBuilder.where('title', 'ilike', `%${payload.filterPost.toLowerCase()}%`)
+                            .orWhere('artist', 'ilike', `%${payload.filterPost.toLowerCase()}%`)
+                            .orWhere('genre', 'ilike', `%${payload.filterPost.toLowerCase()}%`)
+                            .orWhere('type', 'ilike', `%${payload.filterPost.toLowerCase()}%`)
                     }
                     if(payload.order == 'pricedesc') {
                         queryBuilder.orderBy('price', 'desc')
@@ -129,5 +131,62 @@ module.exports = {
         }
         
         next();
-    }
+    },
+
+    async showProduct(req, res, next) {
+        const id = req.body.id
+
+        try {
+            const results = await knex('products')
+                .where({ id: id })
+
+            console.log(results);
+            return res.json(results)
+
+        } catch (error) {
+            next(error)
+        }
+        
+        next();
+    },
+
+    async listCategories(req, res, next) {
+        const artists = []
+        const genres = []
+        const types = []
+        try {
+            const artistsB = await knex('products')
+                .distinct('artist').whereNotNull('artist')
+                .orderBy('artist')         
+            const genresB = await knex('products')
+                .distinct('genre').whereNotNull('genre')
+                .orderBy('genre')
+            const typesB = await knex('products')
+                .distinct('type').whereNotNull('type')
+                .orderBy('type')
+                
+
+            artistsB.forEach(e => {
+               artists.push(e.artist) 
+            });
+
+            genresB.forEach(e => {
+                genres.push(e.genre) 
+             });
+
+            typesB.forEach(e => {
+                types.push(e.type) 
+            });
+
+            return res.json({
+                artists,
+                genres,
+                types 
+            })  
+
+        } catch (error) {
+            next(error)
+        }
+
+    },
 }
