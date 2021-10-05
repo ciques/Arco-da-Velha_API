@@ -1,4 +1,3 @@
-const { query } = require('express');
 const knex = require('../database')
 
 module.exports = {    
@@ -85,7 +84,7 @@ module.exports = {
                 state: product.state
             }).returning('*')
 
-            return res.json(results)
+            return res.json(results[0])
 
         } catch (error) {
             next(error)
@@ -189,4 +188,5 @@ module.exports = {
         }
 
     },
+
 }

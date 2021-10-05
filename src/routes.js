@@ -1,9 +1,12 @@
 const express = require('express')
 const routes = express.Router()
-const authMiddleware = require('./middlewares/auth')
+const multer = require('multer')
+const multerConfig = require("./config/multer");
 
+const authMiddleware = require('./middlewares/auth')
 const AuthController = require ('./controllers/AuthController')
 const ProductsController = require ('./controllers/ProductsController')
+const ImagesController = require ('./controllers/ImagesController')
 
 // Open
 routes.post('/register', AuthController.register)
@@ -18,5 +21,8 @@ routes.post('/addProducts', authMiddleware.verify, ProductsController.addProduct
 routes.post('/removeProducts', authMiddleware.verify, ProductsController.removeProduct)
 routes.post('/updateProducts', authMiddleware.verify, ProductsController.updateProduct)
 routes.post('/refresh', authMiddleware.verify, authMiddleware.refresh)
+
+// Admin 
+routes.post('/uploadImages', multer(multerConfig).single("image"), authMiddleware.verify, ImagesController.uploadImages)
 
 module.exports = routes

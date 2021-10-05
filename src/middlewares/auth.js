@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const knex = require('../database')
 
 module.exports = {
     verify(req, res, next) {
@@ -27,9 +28,16 @@ module.exports = {
                 return res.status(401).send({error: "Token inválido"})
             }
 
-            req.userId = decoded.id;
+            knex('users').where('id', decoded.data).select('is_admin').first().then((result) =>{
 
-            return next();
+                req.userId = decoded.data;
+
+                req.isAdmin = result.is_admin
+
+                return next();
+            })
+
+
         })
 
     },

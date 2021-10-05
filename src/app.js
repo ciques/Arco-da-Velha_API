@@ -1,4 +1,5 @@
 const express = require('express');
+const morgan = require('morgan')
 const routes = require('./routes')
 const port = 5000;
 
@@ -25,7 +26,9 @@ app.use(function (req, res, next) {
 
 app.use(routes)
 
+app.use(express.urlencoded({ extended: true }))
 
+app.use(morgan("dev"))
 
 app.use((req, res, next) => {
   const error = new Error('Not Found')
