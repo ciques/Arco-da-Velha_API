@@ -1,6 +1,6 @@
 exports.up = knex => knex.schema.table('products', function(table) {
       table.string('genre')
-      table.timestamp('release_date')
+      table.integer('release_date')
       table.integer('quantity')
       table.string('state')
     }).then()

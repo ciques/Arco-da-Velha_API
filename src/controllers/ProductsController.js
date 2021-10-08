@@ -53,10 +53,6 @@ module.exports = {
             return res.status(400).send({error: 'Título não informado'})
         }
 
-        if(!product.artist) {
-            return res.status(400).send({error: 'Artista não informado'})
-        }
-
         if(!product.type) {
             return res.status(400).send({error: 'Tipo não informado'})
         }
@@ -65,22 +61,22 @@ module.exports = {
             return res.status(400).send({error: 'Genero não informado'})
         }
 
-        if(!product.release_date) {
-            return res.status(400).send({error: 'Data de Lançamento não informado'})
-        }
-
         if(!product.state) {
             return res.status(400).send({error: 'Estado não informado'})
+        }
+
+        if(!product.price) {
+            return res.status(400).send({error: 'Preço não informado'})
         }
 
         try {
             const results = await knex('products').insert({   
                 title : product.title,
-                artist: product.artist,
+                artist: product.artist ?? null,
                 type: product.type,
-                price: product.price,
+                price: product.price ?? null,
                 genre: product.genre,
-                release_date: product.release_date,
+                release_date: product.release_date ?? null,
                 state: product.state
             }).returning('*')
 
