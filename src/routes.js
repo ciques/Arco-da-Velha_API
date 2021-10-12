@@ -23,6 +23,6 @@ routes.post('/updateProducts', authMiddleware.verify, ProductsController.updateP
 routes.post('/refresh', authMiddleware.verify, authMiddleware.refresh)
 
 // Admin 
-routes.post('/uploadImages', multer(multerConfig).single("image"), authMiddleware.verify, ImagesController.uploadImages)
+routes.post('/uploadImages',  authMiddleware.verify, multer(multerConfig).single("image"), ImagesController.uploadImages)
 
 module.exports = routes

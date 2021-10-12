@@ -1,4 +1,13 @@
 const knex = require('../database')
+const aws = require('aws-sdk')
+
+require('dotenv').config()
+
+aws.config.update({
+    secretAccessKey: process.env.AWS_SECRET,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    region: process.env.AWS_REGION
+})
 
 module.exports = {    
     async listProduct(req, res, next) {
@@ -94,6 +103,15 @@ module.exports = {
 
         try {
             const results = await knex('products').where('id', product.id).del();
+
+            //deleta a imagem também            
+            var s3 = new aws.S3();
+            var params = {  Bucket: process.env.BUCKET_NAME, Key: product.image_url };
+            s3.deleteObject(params, function(err, data) {
+            if (err) console.log(err, err.stack);  // error
+            else     console.log(data);                 // deleted
+            });
+
             return res.json({message: 'Success deleted disco' + product.id})
 
         } catch (error) {
@@ -119,6 +137,16 @@ module.exports = {
                     state: product.state
                 }, ['*'])
             console.log(results);
+
+            if(product.imageUpdate) {
+                var s3 = new aws.S3();
+                var params = {  Bucket: process.env.BUCKET_NAME, Key: product.imageUpdate };
+                s3.deleteObject(params, function(err, data) {
+                if (err) console.log(err, err.stack);  // error
+                else     console.log(data);                 // deleted
+                });
+            }
+
             return res.json({message: 'disco atualizado ' + results})
 
         } catch (error) {

@@ -31,6 +31,7 @@ const storageTypes = {
     acl: "public-read",
     key: (req, file, cb) => {
       const key = uuidv4()
+      
       const fileName = `${key}-${file.originalname}`;
 
       cb(null, fileName);
