@@ -35,6 +35,9 @@ module.exports = {
                     if(payload.order == 'name') {
                         queryBuilder.orderBy('title')
                     }
+                    if(payload.featured) {
+                        queryBuilder.where('featured', true)
+                    }
                 })
                 .paginate({ perPage: payload.pageSize, currentPage: payload.page });
                  
@@ -86,7 +89,8 @@ module.exports = {
                 price: product.price ?? null,
                 genre: product.genre,
                 release_date: product.release_date ?? null,
-                state: product.state
+                state: product.state,
+                featured: product.featured
             }).returning('*')
 
             return res.json(results[0])
@@ -134,7 +138,8 @@ module.exports = {
                     price: product.price,
                     genre: product.genre,
                     release_date: product.release_date,
-                    state: product.state
+                    state: product.state,
+                    featured: product.featured
                 }, ['*'])
             console.log(results);
 
