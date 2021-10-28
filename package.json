@@ -19,6 +19,7 @@
   "homepage": "https://github.com/ciques/Arco-da-Velha_API#readme",
   "dependencies": {
     "aws-sdk": "^2.1000.0",
+    "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
     "crypto": "^1.0.1",
     "dotenv": "^9.0.2",

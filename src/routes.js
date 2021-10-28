@@ -10,6 +10,7 @@ const ImagesController = require ('./controllers/ImagesController')
 
 // Open
 routes.post('/register', AuthController.register)
+routes.post('/userRegister', AuthController.userRegister)
 routes.post('/login', AuthController.login)
 routes.post('/listProducts', ProductsController.listProduct)
 routes.post('/product', ProductsController.showProduct)
