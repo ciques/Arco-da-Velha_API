@@ -15,6 +15,7 @@ routes.post('/login', AuthController.login)
 routes.post('/listProducts', ProductsController.listProduct)
 routes.post('/product', ProductsController.showProduct)
 routes.get('/listCategories', ProductsController.listCategories)
+routes.post('/listComments', ProductsController.listComments)
 
 
 // Autheticated
@@ -22,6 +23,7 @@ routes.post('/addProducts', authMiddleware.verify, ProductsController.addProduct
 routes.post('/removeProducts', authMiddleware.verify, ProductsController.removeProduct)
 routes.post('/updateProducts', authMiddleware.verify, ProductsController.updateProduct)
 routes.post('/refresh', authMiddleware.verify, authMiddleware.refresh)
+routes.post('/productComment', authMiddleware.verify, ProductsController.productComment)
 
 // Admin 
 routes.post('/uploadImages',  authMiddleware.verify, multer(multerConfig).single("image"), ImagesController.uploadImages)

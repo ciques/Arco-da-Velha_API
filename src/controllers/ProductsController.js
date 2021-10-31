@@ -165,8 +165,8 @@ module.exports = {
         const id = req.body.id
 
         try {
-            const results = await knex('products')
-                .where({ id: id })
+            const results = await knex.select('*', 'products.id as id').from('products').leftJoin('comments', 'products.id', 'comments.user_id')
+                .where({ 'products.id': id })
 
             console.log(results);
             return res.json(results)
@@ -217,5 +217,44 @@ module.exports = {
         }
 
     },
+
+    async productComment(req, res, next) {
+        const request = req.body
+
+        try {
+            const results = await knex('comments').insert({
+                comment: request.question,
+                product_id: request.productId,
+                user_id: req.userId
+            }).returning('*')
+
+            console.log(results)
+
+            return res.json({
+                results
+            })  
+        }
+        catch (error) {
+            next(error)
+        }
+    },
+
+    async listComments(req, res, next) {
+        const request = req.body
+
+        try {
+            const results = await knex('comments').leftJoin('users', 'comments.user_id', 'users.id')
+                .where({product_id: request.id}).select('comments.id as id', 'comment', 'user_id', 'product_id', 'comments.created_at', 'name')
+
+            console.log(results)
+
+            return res.json({
+                comments: results
+            })  
+        }
+        catch (error) {
+            next(error)
+        }
+    }
 
 }
