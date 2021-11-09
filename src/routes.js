@@ -19,13 +19,14 @@ routes.post('/listComments', ProductsController.listComments)
 
 
 // Autheticated
-routes.post('/addProducts', authMiddleware.verify, ProductsController.addProduct)
-routes.post('/removeProducts', authMiddleware.verify, ProductsController.removeProduct)
-routes.post('/updateProducts', authMiddleware.verify, ProductsController.updateProduct)
-routes.post('/refresh', authMiddleware.verify, authMiddleware.refresh)
 routes.post('/productComment', authMiddleware.verify, ProductsController.productComment)
+routes.post('/refresh', authMiddleware.verify, authMiddleware.refresh)
 
 // Admin 
-routes.post('/uploadImages',  authMiddleware.verify, multer(multerConfig).single("image"), ImagesController.uploadImages)
+routes.post('/uploadImages',  authMiddleware.verify, authMiddleware.isAdmin, multer(multerConfig).single("image"), ImagesController.uploadImages)
+routes.post('/addProducts', authMiddleware.verify, authMiddleware.isAdmin, ProductsController.addProduct)
+routes.post('/removeProducts', authMiddleware.verify, authMiddleware.isAdmin, ProductsController.removeProduct)
+routes.post('/updateProducts', authMiddleware.verify, authMiddleware.isAdmin, ProductsController.updateProduct)
+routes.post('/loginAdmin', authMiddleware.verify, authMiddleware.isAdmin)
 
 module.exports = routes

@@ -42,6 +42,14 @@ module.exports = {
 
     },
 
+    isAdmin(){
+        if(req.isAdmin) {
+            return next(); 
+        }
+
+        return res.status(403).send({error: "Usuário não é administrador"})
+    },
+
     refresh(req, res, next) {
         token = jwt.sign({ data: req.userId }, process.env.JWT_SECRET, {
             expiresIn: 86400
