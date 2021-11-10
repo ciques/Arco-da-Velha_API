@@ -55,6 +55,6 @@ module.exports = {
             expiresIn: 86400
         });                   
 
-        return res.json(token)
+        return res.json([token, req.isAdmin])
     }
 }
