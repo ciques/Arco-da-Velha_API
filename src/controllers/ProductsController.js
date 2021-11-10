@@ -116,6 +116,9 @@ module.exports = {
             else     console.log(data);                 // deleted
             });
 
+            //deleta também todos comentários do produto
+            await knex('comments').where('product_id', product.id).del();
+
             return res.json({message: 'Success deleted disco' + product.id})
 
         } catch (error) {
