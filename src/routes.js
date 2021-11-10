@@ -27,6 +27,6 @@ routes.post('/uploadImages',  authMiddleware.verify, authMiddleware.isAdmin, mul
 routes.post('/addProducts', authMiddleware.verify, authMiddleware.isAdmin, ProductsController.addProduct)
 routes.post('/removeProducts', authMiddleware.verify, authMiddleware.isAdmin, ProductsController.removeProduct)
 routes.post('/updateProducts', authMiddleware.verify, authMiddleware.isAdmin, ProductsController.updateProduct)
-routes.post('/loginAdmin', authMiddleware.verify, authMiddleware.isAdmin)
+routes.post('/loginAdmin', authMiddleware.verify, authMiddleware.isAdmin, authMiddleware.refresh)
 
 module.exports = routes

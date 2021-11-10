@@ -42,7 +42,7 @@ module.exports = {
 
     },
 
-    isAdmin(){
+    isAdmin(req, res, next){
         if(req.isAdmin) {
             return next(); 
         }
