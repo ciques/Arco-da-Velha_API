@@ -90,7 +90,9 @@ module.exports = {
                 return res.status(400).send({error: 'Email não informado'})
             }
 
-            const checkUser = await knex('users').where('email', newUser.email).first()
+            const email = newUser.email.toLowerCase();
+
+            const checkUser = await knex('users').where('email', email).first()
 
             if(checkUser) {
                 return res.status(400).send({error: 'Usuário já existe'})
@@ -101,12 +103,12 @@ module.exports = {
 
                 try {
                     await knex('users').insert({   
-                            email : newUser.email,
+                            email : email,
                             password: hashPassword,
                             name: newUser.name
                         })
 
-                    var user = await knex('users').where('email', newUser.email).first()
+                    var user = await knex('users').where('email', email).first()
                     
                     user.token = jwt.sign({ data: user.id }, process.env.JWT_SECRET);
                     
@@ -131,6 +133,7 @@ module.exports = {
                 return res.status(400).send({error: 'Email ou senha não informados'})
             }
 
+            email = email.toLowerCase();
             const user = await knex('users').where('email', email).first()
 
             if(!user) {
