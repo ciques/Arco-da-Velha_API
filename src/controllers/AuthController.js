@@ -127,7 +127,7 @@ module.exports = {
 
     async login(req, res, next) {
         try {
-            const { email, password } = req.body
+            var { email, password } = req.body
 
             if(!email || !password) {
                 return res.status(400).send({error: 'Email ou senha não informados'})
